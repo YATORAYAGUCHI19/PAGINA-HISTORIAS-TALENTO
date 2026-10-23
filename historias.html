@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historias | Seminario Proyecta · Unimagdalena</title>
+    <meta name="description" content="Lee y comparte historias universitarias reales de la comunidad de la Universidad del Magdalena.">
+    <meta name="theme-color" content="#0c1a30">
+    <link rel="icon" href="img/logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/historias.css">
+</head>
+<body>
+
+    <!-- ═══ NAVBAR ═══ -->
+    <nav class="main-nav">
+        <a class="nav-brand" href="index.html">
+            <div class="nav-logo-wrap">
+                <img src="img/logo.png" alt="Logo Seminario Proyecta" onerror="this.remove()">
+            </div>
+            <div class="nav-brand-text">
+                Seminario Proyecta
+                <small>Unimagdalena · 2026-1</small>
+            </div>
+        </a>
+        <div class="nav-right">
+            <a class="nav-link" href="index.html"><i class="fas fa-arrow-left icon-left"></i>Inicio</a>
+            <button class="btn-nav-cta" onclick="openSubmit()">
+                <i class="fas fa-plus"></i> Comparte la tuya
+            </button>
+        </div>
+    </nav>
+
+    <main>
+    <!-- ═══ CABECERA ═══ -->
+    <section id="page-header">
+        <div class="ph-grid"></div>
+        <div class="ph-glow"></div>
+        <div class="ph-inner">
+            <span class="ph-eyebrow">Voces de la comunidad</span>
+            <h1 class="ph-title">Historias que<br>inspiran</h1>
+            <p class="ph-sub">Cada carta es un pedazo de vida compartido con generosidad y valentía por estudiantes de la Unimagdalena.</p>
+            <div class="ph-count-pill">
+                <i class="fas fa-book-open"></i>
+                <span id="headerCount">Cargando historias…</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ HISTORIAS ═══ -->
+    <section id="stories-page">
+        <div class="stories-inner">
+
+            <div class="filters-row">
+                <button class="filter-btn active" onclick="setFilter('recent', this)">Más recientes</button>
+                <button class="filter-btn" onclick="setFilter('oldest', this)">Más antiguas</button>
+                <div class="filter-sep"></div>
+                <div class="search-wrap">
+                    <i class="fas fa-search"></i>
+                    <input type="text" class="search-input" id="searchInput"
+                           placeholder="Buscar por nombre o programa…" aria-label="Buscar historias">
+                </div>
+            </div>
+
+            <div class="stories-grid" id="storiesGrid"></div>
+
+            <div class="stories-footer" id="storiesFooter" style="display:none;">
+                <button class="btn-ver-mas" id="btnVerMas" onclick="loadMore()">
+                    <i class="fas fa-plus-circle"></i> Ver más historias
+                </button>
+            </div>
+        </div>
+    </section>
+    </main>
+
+    <!-- ═══ FOOTER ═══ -->
+    <footer class="main-footer">
+        <div class="footer-inner">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <a class="nav-brand" href="index.html">
+                        <div class="nav-logo-wrap">
+                            <img src="img/logo.png" alt="Logo Seminario Proyecta" onerror="this.remove()">
+                        </div>
+                        <div class="nav-brand-text">
+                            Seminario Proyecta
+                            <small>Unimagdalena · 2026-1</small>
+                        </div>
+                    </a>
+                    <p>Una plataforma para compartir historias universitarias reales, nacida desde los Seminarios Proyecta de Talento Magdalena.</p>
+                </div>
+                <div>
+                    <div class="footer-logos-title">Colaboradores</div>
+                    <p class="footer-credits">
+                        Daniel Andrés Retamoza Camargo<br>
+                        Cristian David Salcedo Pacheco<br>
+                        Jaqueline Belen Carbono Bolaño
+                    </p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 · Fran Javier Chacon Mejia · Talento Magdalena · Universidad del Magdalena · Santa Marta, Colombia</p>
+                <a href="index.html">← Volver al inicio</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Botón flotante -->
+    <button class="fab" onclick="openSubmit()" title="Comparte tu historia" aria-label="Comparte tu historia">
+        <i class="fas fa-plus"></i>
+    </button>
+
+    <!-- ═══ MODAL: leer historia ═══ -->
+    <div class="overlay" id="storyModal" role="dialog" aria-modal="true" aria-label="Historia">
+        <div class="modal-box">
+            <div id="modalMediaSection"></div>
+            <div class="modal-content-body">
+                <div class="modal-chips" id="modalChips"></div>
+                <div class="modal-story" id="modalStory"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ MODAL: escribir historia ═══ -->
+    <div class="overlay" id="submitOverlay" role="dialog" aria-modal="true" aria-label="Escribir tu historia">
+        <div class="modal-box">
+            <div class="submit-head">
+                <h3><i class="fas fa-pen-nib"></i>Tu historia</h3>
+                <p>Comparte tu experiencia universitaria con la comunidad Unimagdalena.</p>
+            </div>
+            <div class="submit-form">
+                <div class="form-group">
+                    <label class="form-label" for="iName">Nombre completo</label>
+                    <input type="text" id="iName" class="form-input" placeholder="Ej: Valentina Del Villar" maxlength="80">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="iCareer">Programa · Semestre</label>
+                    <input type="text" id="iCareer" class="form-input" placeholder="Ej: Ing. de Sistemas · 4° semestre" maxlength="100">
+                </div>
+                <div class="form-group">
+                    <span class="form-label">Tu fotografía <span class="optional">(opcional)</span></span>
+                    <div class="upload-zone" onclick="document.getElementById('iPhoto').click()">
+                        <i class="fas fa-camera"></i>
+                        <p>Haz clic para subir tu foto</p>
+                        <small>JPG o PNG · máx. 4 MB</small>
+                    </div>
+                    <input type="file" id="iPhoto" accept="image/*" style="display:none;" onchange="onPhotoChange(event)">
+                    <div class="photo-preview" id="photoPreview">
+                        <img id="photoPreviewImg" src="" alt="Vista previa de tu foto">
+                        <button type="button" class="photo-remove" onclick="removePhoto()">
+                            <i class="fas fa-times-circle"></i> Quitar foto
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="iStory">Tu historia</label>
+                    <textarea id="iStory" class="form-textarea" maxlength="20000"
+                        placeholder="Cuéntanos tu experiencia universitaria: ¿cómo llegaste aquí?, ¿qué obstáculos has superado?, ¿qué aprendizajes llevas?… Escribe lo que sientas."></textarea>
+                    <div class="textarea-hint"><span id="wordCount">0 palabras</span></div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" onclick="closeSubmit()">Cancelar</button>
+                    <button type="button" class="btn-submit" id="btnSubmit" onclick="submitStory()">
+                        <i class="fas fa-paper-plane"></i> Publicar historia
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <!-- Firebase (primero la librería, luego nuestra config, luego la lógica) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/historias.js"></script>
+</body>
+</html>

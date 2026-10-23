@@ -1,0 +1,94 @@
+{
+  "rules": {
+    "talento_stories": {
+      ".read": true,
+      ".indexOn": [
+        "timestamp"
+      ],
+      "$id": {
+        ".write": "!data.exists() && newData.exists()",
+        ".validate": "newData.hasChildren(['name', 'story', 'timestamp'])",
+        "name": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 80"
+        },
+        "career": {
+          ".validate": "newData.isString() && newData.val().length <= 100"
+        },
+        "story": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 20000"
+        },
+        "photo": {
+          ".validate": "newData.isString() && newData.val().beginsWith('data:image/jpeg;base64,') && newData.val().length < 1500000"
+        },
+        "timestamp": {
+          ".validate": "newData.isNumber()"
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
+    },
+    "gallery": {
+      ".read": true,
+      "$frame": {
+        ".write": "!data.exists() && newData.exists()",
+        ".validate": "$frame.matches(/^image_[0-9]+$/) && newData.hasChildren(['data', 'type', 'timestamp'])",
+        "data": {
+          ".validate": "newData.isString() && newData.val().length < 9000000 && (newData.val().beginsWith('data:image/') || newData.val().beginsWith('data:video/'))"
+        },
+        "type": {
+          ".validate": "newData.val() == 'image' || newData.val() == 'video'"
+        },
+        "timestamp": {
+          ".validate": "newData.isNumber()"
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
+    },
+    "gallery_settings": {
+      ".read": true,
+      "total_frames": {
+        ".write": true,
+        ".validate": "newData.isNumber() && newData.val() >= 9 && newData.val() <= 500 && newData.val() >= (data.exists() ? data.val() : 9) && newData.val() <= (data.exists() ? data.val() : 9) + 6"
+      },
+      "$other": {
+        ".validate": false
+      }
+    },
+    "writings": {
+      ".read": true,
+      "$book": {
+        ".write": "!data.exists() && newData.exists()",
+        ".validate": "$book.matches(/^book_[0-9]+$/) && newData.hasChildren(['title', 'text', 'timestamp'])",
+        "title": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 50"
+        },
+        "text": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 2000"
+        },
+        "timestamp": {
+          ".validate": "newData.isNumber()"
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
+    },
+    "writings_settings": {
+      ".read": true,
+      "total_books": {
+        ".write": true,
+        ".validate": "newData.isNumber() && newData.val() >= 9 && newData.val() <= 500 && newData.val() >= (data.exists() ? data.val() : 9) && newData.val() <= (data.exists() ? data.val() : 9) + 6"
+      },
+      "$other": {
+        ".validate": false
+      }
+    },
+    "$other": {
+      ".read": false,
+      ".write": false
+    }
+  }
+}
