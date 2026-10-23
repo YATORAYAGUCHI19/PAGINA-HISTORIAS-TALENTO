@@ -2,7 +2,7 @@
 
 Plataforma web para compartir historias universitarias reales, creada en los **Seminarios Proyecta 2026-1** de Talento Magdalena – Universidad del Magdalena (Santa Marta, Colombia).
 
-🔗 **Sitio en vivo:** https://YATORAYAGUCHI19.github.io/historias-que-inspiran/
+🔗 **Sitio en vivo:** https://yatorayaguchi19.github.io/PAGINA-HISTORIAS-TALENTO/
 
 ## ✨ Características
 
